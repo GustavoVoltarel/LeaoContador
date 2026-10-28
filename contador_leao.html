@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contador de Bocejos 🦁</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #f9fafb;
+        background: linear-gradient(145deg, #111827, #272033);
+      }
+
+      .card {
+        width: min(100%, 460px);
+        text-align: center;
+        padding: 40px 28px;
+        border-radius: 24px;
+        background: #ffffff0d;
+        border: 1px solid #ffffff19;
+        box-shadow: 0 18px 60px #00000045;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(26px, 6vw, 34px);
+      }
+      .descricao {
+        color: #cbd5e1;
+        margin: 0 0 32px;
+      }
+
+      .contador {
+        font-size: 80px;
+        font-weight: bold;
+        color: #fbbf24;
+        line-height: 1;
+        margin: 0 0 12px;
+      }
+
+      .legenda {
+        color: #cbd5e1;
+        margin: 0 0 30px;
+      }
+
+      button {
+        width: 100%;
+        border: 0;
+        border-radius: 14px;
+        padding: 17px;
+        background: #f59e0b;
+        color: #111827;
+        font-size: 19px;
+        font-weight: 800;
+        cursor: pointer;
+        transition:
+          transform 150ms,
+          background 150ms;
+      }
+
+      button:hover {
+        background: #fbbf24;
+        transform: translateY(-2px);
+      }
+      button:active {
+        transform: scale(0.98);
+      }
+      button:focus-visible {
+        outline: 3px solid white;
+        outline-offset: 4px;
+      }
+
+      .animacao {
+        display: none;
+        margin-top: 24px;
+        animation: aparecer 220ms ease-out;
+      }
+
+      .animacao.ativa {
+        display: block;
+      }
+      .animacao img {
+        width: 100%;
+        max-height: 320px;
+        object-fit: contain;
+        border-radius: 14px;
+      }
+
+      @keyframes aparecer {
+        from {
+          opacity: 0;
+          transform: scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <h1>🦁</h1>
+      <div id="contador" class="contador" aria-live="polite">0</div>
+      <p class="legenda">bocejos contabilizados</p>
+      <button id="botao" type="button">🦁</button>
+      <div id="animacao" class="animacao" aria-live="off"></div>
+    </main>
+
+    <script>
+      const botao = document.getElementById("botao");
+      const contadorElemento = document.getElementById("contador");
+      const animacao = document.getElementById("animacao");
+      const gifLeao =
+        "https://raw.githubusercontent.com/GustavoVoltarel/gvoolt3d/main/assets/contador-leao/leao-bocejando.gif";
+
+      let total = 0;
+      let temporizador;
+
+      botao.addEventListener("click", () => {
+        total += 1;
+        contadorElemento.textContent = total;
+
+        // Recria a imagem para reiniciar o GIF em cada clique.
+        const imagem = document.createElement("img");
+        imagem.alt = "Leão bocejando";
+        imagem.src = gifLeao + "?clique=" + total;
+        animacao.replaceChildren(imagem);
+
+        animacao.classList.remove("ativa");
+        void animacao.offsetWidth;
+        animacao.classList.add("ativa");
+
+        // Se clicar de novo antes de acabar, o tempo começa novamente.
+        clearTimeout(temporizador);
+        temporizador = setTimeout(() => {
+          animacao.classList.remove("ativa");
+          animacao.replaceChildren();
+        }, 5000);
+      });
+    </script>
+  </body>
+</html>
